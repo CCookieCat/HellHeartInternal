@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scenes/MapMachanicNode.gd" type="Script" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 5.0
+
+[sub_resource type="MultiMesh" id=3]
+
+[sub_resource type="ArrayMesh" id=4]
+surfaces/0 = {
+"aabb": AABB( -32, -32, 0, 64, 64, 0 ),
+"array_data": PoolByteArray( 0, 0, 0, 66, 0, 0, 0, 194, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 66, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 0, 194, 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 194, 0, 0, 0, 194, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 248, 65, 0, 0, 0, 194, 0, 0, 124, 63, 0, 0, 0, 0 ),
+"array_index_data": PoolByteArray( 4, 0, 0, 0, 1, 0, 1, 0, 2, 0, 3, 0, 3, 0, 4, 0, 1, 0 ),
+"blend_shape_data": [  ],
+"format": 262417,
+"index_count": 9,
+"primitive": 4,
+"skeleton_aabb": [  ],
+"vertex_count": 5
+}
+
+[sub_resource type="CircleShape2D" id=5]
+
+[node name="MapMachanicNode" type="Node2D"]
+script = ExtResource( 1 )
+is_active = true
+is_circleAOE = true
+aoeSize = Vector2( 0, 100 )
+selected_range = true
+
+[node name="DisplaceNode" type="Sprite" parent="."]
+rotation = 2.79253
+texture = ExtResource( 2 )
+
+[node name="AOEcast" type="RayCast2D" parent="DisplaceNode"]
+enabled = true
+collide_with_areas = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DisplaceNode"]
+shape = SubResource( 1 )
+
+[node name="MechanicTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="MultiMeshInstance2D" type="MultiMeshInstance2D" parent="."]
+multimesh = SubResource( 3 )
+
+[node name="Sprite_to_mesh" type="MeshInstance2D" parent="."]
+visible = false
+mesh = SubResource( 4 )
+texture = ExtResource( 2 )
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2( 544, 261 )
+collision_layer = 263
+collision_mask = 263
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 5 )
+
+[connection signal="timeout" from="MechanicTimer" to="." method="_on_MechanicTimer_timeout"]

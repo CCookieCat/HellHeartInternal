@@ -1,0 +1,94 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Scenes/Enemy.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/World.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/FPSinfo.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Resources/Bullets/bullet.png" type="Texture" id=5]
+[ext_resource path="res://Scenes/MapMachanicNode.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Resources/Bullets/bullet_01.png" type="Texture" id=7]
+
+[sub_resource type="MultiMesh" id=2]
+color_format = 1
+
+[sub_resource type="ArrayMesh" id=3]
+surfaces/0 = {
+"aabb": AABB( -16, -16, 0, 32, 32, 0 ),
+"array_data": PoolByteArray( 0, 0, 128, 65, 154, 153, 81, 193, 0, 0, 128, 63, 154, 153, 185, 61, 0, 0, 128, 65, 0, 0, 48, 65, 0, 0, 128, 63, 0, 0, 88, 63, 154, 153, 57, 65, 0, 0, 128, 65, 205, 204, 92, 63, 0, 0, 128, 63, 51, 51, 67, 193, 0, 0, 128, 65, 51, 51, 243, 61, 0, 0, 128, 63, 0, 0, 128, 193, 0, 0, 80, 65, 0, 0, 0, 0, 0, 0, 104, 63, 0, 0, 128, 193, 0, 0, 32, 65, 0, 0, 0, 0, 0, 0, 80, 63, 0, 0, 128, 193, 0, 0, 48, 193, 0, 0, 0, 0, 0, 0, 32, 62, 0, 0, 48, 193, 205, 204, 124, 193, 0, 0, 32, 62, 205, 204, 204, 59, 52, 51, 51, 65, 0, 0, 128, 193, 154, 153, 89, 63, 0, 0, 0, 0 ),
+"array_index_data": PoolByteArray( 8, 0, 0, 0, 1, 0, 1, 0, 2, 0, 3, 0, 3, 0, 4, 0, 5, 0, 5, 0, 6, 0, 7, 0, 7, 0, 8, 0, 1, 0, 1, 0, 3, 0, 5, 0, 5, 0, 7, 0, 1, 0 ),
+"blend_shape_data": [  ],
+"format": 262417,
+"index_count": 21,
+"primitive": 4,
+"skeleton_aabb": [  ],
+"vertex_count": 9
+}
+
+[node name="World" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Enemy" parent="." instance=ExtResource( 1 )]
+position = Vector2( 711, 157 )
+scale = Vector2( 0.5, 0.5 )
+rotation_speed = 55
+BULLET_SPEED = 40
+is_destructible = true
+spawn_point_count = 5
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2( 540, 360 )
+current = true
+
+[node name="Enemy2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 671, 470 )
+scale = Vector2( 0.5, 0.5 )
+BULLET_SPEED = 40
+spawn_rate = 0.3
+spawn_point_count = 7
+
+[node name="Player" parent="." instance=ExtResource( 4 )]
+position = Vector2( 353, 61 )
+scale = Vector2( 0.5, 0.5 )
+collision_layer = 257
+face_target = false
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 5 )
+
+[node name="MapMachanicNode" parent="." instance=ExtResource( 6 )]
+visible = false
+use_map_mechs = true
+radius = 300
+rotationSpeed = 8000
+is_fieldsAOE = true
+fields_amount = 20
+selected_range = false
+
+[node name="N_BulletMesh" type="MultiMeshInstance2D" parent="."]
+multimesh = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance2D" parent="."]
+visible = false
+mesh = SubResource( 3 )
+texture = ExtResource( 7 )
+
+[node name="ReferenceRect" type="ReferenceRect" parent="."]
+margin_left = 162.0
+margin_top = 133.0
+margin_right = 441.0
+margin_bottom = 308.0
+border_width = 5.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FPS" type="Label" parent="."]
+margin_left = 977.0
+margin_top = 29.0
+margin_right = 1015.0
+margin_bottom = 43.0
+rect_scale = Vector2( 2, 2 )
+text = "FPS: 0"
+align = 1
+script = ExtResource( 3 )
